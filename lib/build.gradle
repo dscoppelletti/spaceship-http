@@ -1,0 +1,73 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'org.jetbrains.dokka'
+apply plugin: 'it.scoppelletti.spaceship.spaceship-gradle-android'
+
+group 'it.scoppelletti.spaceship'
+description 'Spaceship for HTTP'
+archivesBaseName = 'spaceship-http'
+
+android {
+    compileSdkVersion sdk_target
+    defaultConfig {
+        minSdkVersion sdk_min
+        targetSdkVersion sdk_target
+        versionCode 1
+        versionName '1.0.0'
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            consumerProguardFiles 'consumer-rules.pro'
+            debuggable false
+        }
+        debug {
+            minifyEnabled false
+            debuggable true
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
+}
+
+spaceship {
+    url = 'http://github.com/dscoppelletti/spaceship-http'
+    scmUrl = 'git@github.com:dscoppelletti/spaceship-http.git'
+    inceptionYear = '2017-2018'
+}
+
+configurations {
+    bom
+    api.extendsFrom(bom)
+    kapt.extendsFrom(bom)
+}
+
+dependencies {
+    bom platform(BOM)
+    api 'androidx.annotation:annotation'
+    api 'androidx.appcompat:appcompat'
+    api 'androidx.constraintlayout:constraintlayout'
+    api 'com.google.android.material:material'
+    api 'com.google.dagger:dagger'
+    kapt 'com.google.dagger:dagger-compiler'
+    api 'com.squareup.okhttp3:okhttp'
+    api 'com.squareup.retrofit2:retrofit'
+    api('it.scoppelletti.spaceship:spaceship-stdlib')
+    api 'it.scoppelletti.spaceship:spaceship-ui'
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
+    implementation 'com.squareup.okio:okio'
+    implementation 'io.github.microutils:kotlin-logging'
+    implementation 'org.slf4j:slf4j-api'
+}
