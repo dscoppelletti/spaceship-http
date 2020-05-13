@@ -64,8 +64,8 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler'
     api 'com.squareup.okhttp3:okhttp'
     api 'com.squareup.retrofit2:retrofit'
-    api('it.scoppelletti.spaceship:spaceship-stdlib')
-    api 'it.scoppelletti.spaceship:spaceship-ui'
+    api 'it.scoppelletti.spaceship:spaceship'
+    api 'it.scoppelletti.spaceship:spaceship-stdlib'
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
     implementation 'com.squareup.okio:okio'
     implementation 'io.github.microutils:kotlin-logging'
