@@ -24,8 +24,8 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import it.scoppelletti.spaceship.ApplicationException
+import it.scoppelletti.spaceship.i18n.AppMessages
 import it.scoppelletti.spaceship.i18n.I18NProvider
-import it.scoppelletti.spaceship.i18n.UIMessages
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.util.Locale
@@ -46,7 +46,7 @@ public class ClientInterceptor @Inject constructor(
         private val context: Context,
         private val packageMgr: PackageManager,
         private val i18nProvider: I18NProvider,
-        private val uiMessages: UIMessages
+        private val appMessages: AppMessages
 ) : Interceptor {
 
     private val osName: String
@@ -76,7 +76,7 @@ public class ClientInterceptor @Inject constructor(
         try {
             packageInfo = packageMgr.getPackageInfo(name, 0)
         } catch (ex: PackageManager.NameNotFoundException) {
-            throw ApplicationException(uiMessages.errorPackageNotFound(name),
+            throw ApplicationException(appMessages.errorPackageNotFound(name),
                     ex)
         }
 

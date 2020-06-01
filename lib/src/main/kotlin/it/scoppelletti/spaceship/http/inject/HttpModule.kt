@@ -24,6 +24,7 @@ import dagger.multibindings.IntoMap
 import it.scoppelletti.spaceship.http.ClientInterceptor
 import it.scoppelletti.spaceship.http.HttpExt
 import it.scoppelletti.spaceship.http.widget.HttpExceptionMapperHandler
+import it.scoppelletti.spaceship.inject.AppModule
 import it.scoppelletti.spaceship.inject.ExceptionMapperKey
 import it.scoppelletti.spaceship.widget.ExceptionMapperHandler
 import okhttp3.Interceptor
@@ -35,8 +36,8 @@ import javax.inject.Named
  *
  * @since 1.0.0
  */
-@Module
-public abstract class HttpUIModule {
+@Module(includes = [ AppModule::class ])
+public abstract class HttpModule {
 
     @Binds
     @Named(HttpExt.DEP_CLIENTINTERCEPTOR)
