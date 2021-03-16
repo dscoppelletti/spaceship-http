@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Dario Scoppelletti, <http://www.scoppelletti.it/>.
+ * Copyright (C) 2018-2021 Dario Scoppelletti, <http://www.scoppelletti.it/>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import it.scoppelletti.spaceship.io.closeQuietly
 import it.scoppelletti.spaceship.widget.ExceptionAdapter
 import it.scoppelletti.spaceship.widget.ExceptionItem
 import it.scoppelletti.spaceship.widget.ExceptionMapperHandler
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import mu.KotlinLogging
 import okhttp3.ResponseBody
 import okio.BufferedSource

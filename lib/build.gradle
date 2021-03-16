@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'it.scoppelletti.spaceship.spaceship-gradle-android'
 
@@ -45,7 +45,7 @@ android {
 spaceship {
     url = 'http://github.com/dscoppelletti/spaceship-http'
     scmUrl = 'git@github.com:dscoppelletti/spaceship-http.git'
-    inceptionYear = '2017-2018'
+    inceptionYear = '2017-2021'
 }
 
 configurations {
