@@ -90,9 +90,9 @@ public class ClientInterceptor @Inject constructor(
 
     override fun intercept(chain: Interceptor.Chain): Response =
             chain.proceed(chain.request().newBuilder()
-                    .header(HttpExt.HEADER_OS, osName)
-                    .header(HttpExt.HEADER_APPL, applName)
-                    .header(HttpExt.HEADER_LOCALE, toLanguageTag(
+                    .header(HttpHeader.OS, osName)
+                    .header(HttpHeader.APPL, applName)
+                    .header(HttpHeader.LOCALE, toLanguageTag(
                             i18nProvider.currentLocale()))
                     .build())
 }
