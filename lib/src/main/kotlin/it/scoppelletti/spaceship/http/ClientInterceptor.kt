@@ -28,7 +28,6 @@ import it.scoppelletti.spaceship.i18n.AppMessages
 import it.scoppelletti.spaceship.i18n.I18NProvider
 import okhttp3.Interceptor
 import okhttp3.Response
-import java.util.Locale
 import javax.inject.Inject
 
 private const val LANG_UND = "und"
@@ -92,45 +91,10 @@ public class ClientInterceptor @Inject constructor(
             chain.proceed(chain.request().newBuilder()
                     .header(HttpHeader.OS, osName)
                     .header(HttpHeader.APPL, applName)
-                    .header(HttpHeader.LOCALE, toLanguageTag(
-                            i18nProvider.currentLocale()))
+                    .header(HttpHeader.LOCALE,
+                            i18nProvider.currentLocale().toLanguageTag())
+                    .header(HttpHeader.TIMEZONE,
+                            i18nProvider.currentZoneId().id)
                     .build())
 }
 
-/**
- * Returns the language tag corresponding to a locale object.
- *
- * @param  locale The locale object.
- * @return        The language tag.
- */
-private fun toLanguageTag(locale: Locale): String {
-    var s: String?
-    val buf: StringBuilder
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        return locale.toLanguageTag()
-    }
-
-    // Simple alternative implementation that does not strictly comply
-    // IEFT BCP 47
-    buf = StringBuilder()
-
-    s = locale.language
-    buf.append(if (s.isNullOrBlank()) LANG_UND else s.toLowerCase(Locale.UK))
-
-    s = locale.country
-    if (!s.isNullOrBlank()) {
-        buf.append(LANG_SEP)
-                .append(s.toUpperCase(Locale.UK))
-    }
-
-    s = locale.variant
-    if (!s.isNullOrBlank()) {
-        s.split(LOCALE_SEP).forEach { variant ->
-            buf.append(LANG_SEP)
-                    .append(variant.toLowerCase(Locale.UK))
-        }
-    }
-
-    return buf.toString()
-}
