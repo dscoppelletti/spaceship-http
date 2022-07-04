@@ -4,8 +4,9 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
-//    id 'org.jetbrains.dokka'
+    id 'maven-publish'
     id 'it.scoppelletti.spaceship.android-library'
+    id 'org.jetbrains.dokka'
 }
 
 group 'it.scoppelletti.spaceship'
@@ -14,10 +15,11 @@ description 'Spaceship for HTTP'
 archivesBaseName = 'spaceship-http'
 
 android {
-    compileSdkVersion sdk_target
+    namespace 'it.scoppelletti.spaceship.http'
+    compileSdk sdk_target
     defaultConfig {
-        minSdkVersion sdk_min
-        targetSdkVersion sdk_target
+        minSdk sdk_min
+        targetSdk sdk_target
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -37,9 +39,10 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
     }
 }
 
@@ -57,7 +60,8 @@ configurations {
 }
 
 dependencies {
-    bom platform(BOM)
+    bom platform(KOTLIN_BOM)
+    bom platform(SPACESHIP_BOM)
     api 'androidx.annotation:annotation'
     api 'androidx.appcompat:appcompat'
     api 'androidx.constraintlayout:constraintlayout'
@@ -68,7 +72,6 @@ dependencies {
     api 'com.squareup.retrofit2:retrofit'
     api 'it.scoppelletti.spaceship:spaceship'
     api 'it.scoppelletti.spaceship:spaceship-stdlib'
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
     implementation 'com.squareup.okio:okio'
     implementation 'io.github.microutils:kotlin-logging'
     implementation 'org.slf4j:slf4j-api'

@@ -5,11 +5,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion sdk_target
+    namespace 'it.scoppelletti.spaceship.http.sample'
+    compileSdk sdk_target
     defaultConfig {
         applicationId 'it.scoppelletti.spaceship.http.sample'
-        minSdkVersion sdk_min
-        targetSdkVersion sdk_target
+        minSdk sdk_min
+        targetSdk sdk_target
         versionCode 1
         versionName '1.0.0'
     }
