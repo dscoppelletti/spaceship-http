@@ -4,7 +4,7 @@ pluginManagement {
         google()
         mavenCentral()
 
-        if (settings["it.scoppelletti.tools.devRepoUrl"]) {
+        if (settings.rootProject.hasProperty("it.scoppelletti.tools.devRepoUrl")) {
             maven {
                 url settings["it.scoppelletti.tools.devRepoUrl"]
             }
@@ -17,9 +17,9 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
 
-        if (settings["it.scoppelletti.tools.devRepoUrl"]) {
+        if (settings.hasProperty("it.scoppelletti.spaceship.repository.url")) {
             maven {
-                url settings["it.scoppelletti.tools.devRepoUrl"]
+                url settings["it.scoppelletti.spaceship.repository.url"]
             }
         }
     }
