@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier")
-
 package it.scoppelletti.spaceship.http.widget
 
 import android.view.LayoutInflater
@@ -29,8 +27,6 @@ import it.scoppelletti.spaceship.widget.ExceptionItem
 import it.scoppelletti.spaceship.widget.ExceptionMapperHandler
 import kotlinx.parcelize.Parcelize
 import mu.KotlinLogging
-import okhttp3.ResponseBody
-import okio.BufferedSource
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
@@ -67,12 +63,11 @@ public class HttpExceptionAdapter : ExceptionAdapter<HttpExceptionItem> {
             ex: HttpExceptionItem,
             parent: ViewGroup
     ): View {
-        val itemView: View
-        val inflater: LayoutInflater
+        @Suppress("JoinDeclarationAndAssignment")
         var textView: TextView
 
-        inflater = LayoutInflater.from(parent.context)
-        itemView = inflater.inflate(
+        val inflater = LayoutInflater.from(parent.context)
+        val itemView = inflater.inflate(
                 R.layout.it_scoppelletti_httpexception, parent, false)
 
         textView = itemView.findViewById(R.id.txtMessage)
@@ -101,23 +96,15 @@ public class HttpExceptionMapperHandler @Inject constructor(
 
     override fun map(ex: HttpException) : ExceptionItem {
         val message: String
-        val resp: Response<*>?
-        val body: ResponseBody?
-        val stream: BufferedSource
 
-        resp = ex.response()
-        if (resp == null) {
-            // The original exception comes from a deserialization
+        val resp = ex.response()
+            ?: // The original exception comes from a deserialization
             return map(ex, null, null)
-        }
 
-        body = resp.errorBody()
-        if (body == null) {
-            return map(ex, resp, null)
-        }
+        val body = resp.errorBody() ?: return map(ex, resp, null)
 
         // I don't want to consume the original Okio source of the body
-        stream = body.source().peek()
+        val stream = body.source().peek()
         try {
             message = stream.readUtf8()
         } catch (err: IOException) {
@@ -144,13 +131,12 @@ public class HttpExceptionMapperHandler @Inject constructor(
             resp: Response<*>?,
             body: String?
     ): HttpExceptionItem {
-        val msg: String?
         var statusCode: Int
         var error: String?
 
-        msg = if (body.isNullOrBlank()) ex.message else body
+        val msg = if (body.isNullOrBlank()) ex.message else body
 
-        statusCode = if (resp?.code() == null) 0 else resp.code()
+        statusCode = resp?.code() ?: 0
         if (statusCode == 0) {
             statusCode = ex.code()
         }

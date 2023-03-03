@@ -10,7 +10,7 @@ plugins {
 }
 
 group 'it.scoppelletti.spaceship'
-version '1.0.0'
+version '1.1.0'
 description 'Spaceship for HTTP'
 archivesBaseName = 'spaceship-http'
 
@@ -21,6 +21,9 @@ android {
         minSdk sdk_min
         targetSdk sdk_target
         vectorDrawables.useSupportLibrary = true
+        aarMetadata {
+            minCompileSdk = sdk_min
+        }
     }
     buildTypes {
         release {
@@ -38,6 +41,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
+        freeCompilerArgs += '-Xexplicit-api=strict'
     }
     publishing {
         singleVariant('release') {

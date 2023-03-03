@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("JoinDeclarationAndAssignment", "RedundantVisibilityModifier",
-        "RemoveRedundantQualifierName", "unused")
-
 package it.scoppelletti.spaceship.http
 
 import android.content.Context
@@ -24,15 +21,13 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import it.scoppelletti.spaceship.ApplicationException
+import it.scoppelletti.spaceship.app.AppExt
 import it.scoppelletti.spaceship.i18n.AppMessages
 import it.scoppelletti.spaceship.i18n.I18NProvider
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 
-private const val LANG_UND = "und"
-private const val LANG_SEP = '-'
-private const val LOCALE_SEP = '_'
 private const val OS_NAME = "android"
 private const val VALUE_SEP = ';'
 
@@ -48,32 +43,29 @@ public class ClientInterceptor @Inject constructor(
         private val appMessages: AppMessages
 ) : Interceptor {
 
-    private val osName: String
+    private val osName = buildString {
+        append(OS_NAME)
+        append(VALUE_SEP)
+        append(Build.VERSION.SDK_INT)
+    }
+
     private val applName: String
 
     init {
-        osName = buildString {
-            append(OS_NAME)
-            append(VALUE_SEP)
-            append(Build.VERSION.SDK_INT)
-        }
-
         applName = initApplName()
     }
 
     /**
      * Init the application name and version.
      *
-     * @return            The value.
+     * @return The value.
      */
-    @Suppress("Deprecation")
     private fun initApplName(): String {
-        val name: String
         val packageInfo: PackageInfo
 
-        name = context.packageName
+        val name = context.packageName
         try {
-            packageInfo = packageMgr.getPackageInfo(name, 0)
+            packageInfo = AppExt.getPackageInfo(packageMgr, name, 0)
         } catch (ex: PackageManager.NameNotFoundException) {
             throw ApplicationException(appMessages.errorPackageNotFound(name),
                     ex)
@@ -82,8 +74,7 @@ public class ClientInterceptor @Inject constructor(
         return buildString {
             append(name)
             append(VALUE_SEP)
-            append(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
-                packageInfo.longVersionCode else packageInfo.versionCode)
+            append(AppExt.getVersion(packageInfo))
         }
     }
 
