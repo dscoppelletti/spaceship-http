@@ -37,10 +37,9 @@ android {
     compileOptions {
         coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
         freeCompilerArgs += '-Xexplicit-api=strict'
     }
     publishing {
@@ -48,6 +47,10 @@ android {
             withSourcesJar()
         }
     }
+}
+
+kotlin {
+    jvmToolchain(17)
 }
 
 spaceship {
